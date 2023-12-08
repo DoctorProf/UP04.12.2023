@@ -5,24 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProblemBook"
         mc:Ignorable="d"
-        Title="Главная страница" Height="450" Width="800" Background="AliceBlue">
+        Height="600"
+        MaxHeight="600"
+        MinHeight="600"
+        Width="1100"
+        MaxWidth="1100"
+        MinWidth="1100"
+        Loaded="Window_Loaded"
+>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Button Grid.Column="1" 
-                Content="Задачи/Заметки"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center" 
-                Margin="20"
-                Click="ClickOnButton"
-                Width="200"
-                Height="50" 
-                BorderBrush="Black"
-                Background="BlanchedAlmond"
-                Foreground="Black"
-        />
+        <Frame Name ="NavigateFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

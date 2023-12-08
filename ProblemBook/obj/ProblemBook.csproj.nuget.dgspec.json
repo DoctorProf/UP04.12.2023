@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\С++\\ProblemBook\\ProblemBook.csproj": {}
+    "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\UP\\UP04.12.2023\\ProblemBook\\ProblemBook.csproj": {}
   },
   "projects": {
-    "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\С++\\ProblemBook\\ProblemBook.csproj": {
+    "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\UP\\UP04.12.2023\\ProblemBook\\ProblemBook.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\С++\\ProblemBook\\ProblemBook.csproj",
+        "projectUniqueName": "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\UP\\UP04.12.2023\\ProblemBook\\ProblemBook.csproj",
         "projectName": "ProblemBook",
-        "projectPath": "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\С++\\ProblemBook\\ProblemBook.csproj",
+        "projectPath": "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\UP\\UP04.12.2023\\ProblemBook\\ProblemBook.csproj",
         "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\С++\\ProblemBook\\obj\\",
+        "outputPath": "C:\\Users\\USER\\OneDrive\\Рабочий стол\\DoctorProf\\UP\\UP04.12.2023\\ProblemBook\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,10 +44,6 @@
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
           "dependencies": {
-            "EntityFramework": {
-              "target": "Package",
-              "version": "[6.4.4, )"
-            },
             "MaterialDesignColors": {
               "target": "Package",
               "version": "[2.1.4, )"
@@ -56,9 +52,9 @@
               "target": "Package",
               "version": "[4.9.0, )"
             },
-            "SQLite": {
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[3.13.0, )"
+              "version": "[7.0.5, )"
             }
           },
           "imports": [
