@@ -26,6 +26,16 @@ namespace ProblemBook
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if(DataBaseContext.Instance.ProblemTypes.Count() == 0)
+            {
+                List<ProblemType> problemTypes = new() 
+                { 
+                    new ProblemType() { Name = "Заметка"},
+                    new ProblemType() { Name = "Задача"},
+                };
+                DataBaseContext.Instance.ProblemTypes.AddRange(problemTypes);
+                DataBaseContext.Instance.SaveChanges();
+            }
             Navigate.Navigate.СurrentFrame = NavigateFrame;
             Navigate.Navigate.СurrentFrame.Navigate(new EntryPage());
         }

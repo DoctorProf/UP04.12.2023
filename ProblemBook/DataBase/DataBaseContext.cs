@@ -19,6 +19,7 @@ namespace ProblemBook.DataBase
         public static DataBaseContext Instance { get; } = new();
 
         public DbSet<Problem> Problems { get; set; }
+        public DbSet<ProblemType> ProblemTypes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=problemBook.db");
@@ -28,6 +29,7 @@ namespace ProblemBook.DataBase
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Problem>().ToTable("Problem");
+            modelBuilder.Entity<ProblemType>().ToTable("ProblemType");
         }
     }
 }
