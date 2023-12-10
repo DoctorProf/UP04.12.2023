@@ -35,7 +35,7 @@
         </DataGrid>
         <Button Grid.Column="1" 
                 Grid.Row="1"
-            Content="Добавить запись"
+            Content="Add Problem"
             HorizontalAlignment="Center" 
             Margin="0,60,0,370"
             Click="ClickOnAdd"
@@ -46,7 +46,7 @@
             Foreground="Black"/>
         <Button Grid.Column="1" 
         Grid.Row="1"
-        Content="Удалить запись"
+        Content="Delete Problem"
         HorizontalAlignment="Center" 
         Margin="0,140,0,290"
         Click="ClickOnRemove"

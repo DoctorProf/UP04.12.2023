@@ -30,8 +30,8 @@ namespace ProblemBook
             {
                 List<ProblemType> problemTypes = new() 
                 { 
-                    new ProblemType() { Name = "Заметка"},
-                    new ProblemType() { Name = "Задача"},
+                    new ProblemType() { Name = "Note"},
+                    new ProblemType() { Name = "Task"},
                 };
                 DataBaseContext.Instance.ProblemTypes.AddRange(problemTypes);
                 DataBaseContext.Instance.SaveChanges();

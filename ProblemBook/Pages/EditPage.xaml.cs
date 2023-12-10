@@ -28,7 +28,6 @@ namespace ProblemBook.Pages
             InitializeComponent();
             currentProblem = problem;
         }
-
         private void ClickOnButtonBack(object sender, RoutedEventArgs e)
         {
             BasicPage basicPage = new();
@@ -36,26 +35,117 @@ namespace ProblemBook.Pages
         }
         private void ClickOnButtonSave(object sender, RoutedEventArgs e)
         {
-            Problem problem = new()
+            bool correct = true;
+            string createDate = "";
+            string shortName = ShortNameBox.Text;
+            string tags = TagsBox.Text;
+            string fullDescription = FullDescriptionBox.Text;
+            string plannedDate = "";
+            string daysLeft = "";
+            string dateСompletion = "";
+            ProblemType typeProblem = (ProblemType)TypesCombo.SelectedItem;
+            if(createDate.Trim() == "")
             {
-                CreateDate = CreateDatePick.SelectedDate.ToString(),
-                ShortName = ShortNameBox.Text,
-                Tags = TagsBox.Text,
-                FullDescription = FullDescriptionBox.Text,
-                PlannedDate = PlannedDatePick.SelectedDate.ToString(),
-                DaysLeft = DaysLeftBox.Text,
-                DateСompletion = СompletionDatePick.SelectedDate.ToString(),
-                Type = (ProblemType)TypesCombo.SelectedItem
-            };
-            DataBaseContext.Instance.Problems.Add(problem);
-            DataBaseContext.Instance.SaveChanges();
-            BasicPage basicPage = new();
-            Navigate.Navigate.СurrentFrame.Navigate(basicPage);
+                createDate = DateTime.Now.ToString("d");
+            }
+            if(shortName.Trim() == "")
+            {
+                correct = false;
+            } 
+            else
+            {
+                currentProblem.ShortName = shortName;
+            }
+            if(tags.Trim() == "")
+            {
+                correct = false;
+            }
+            else
+            {
+                currentProblem.Tags = tags;
+            }
+            if(fullDescription.Trim() == "")
+            {
+                correct = false;
+            }
+            else
+            {
+                currentProblem.FullDescription = fullDescription;
+            }
+            if(typeProblem == null) 
+            {
+                correct = false;
+            }  
+            else
+            {
+                ProblemType currentType = (ProblemType)TypesCombo.SelectedItem;
+                if ( currentType == DataBaseContext.Instance.ProblemTypes.ToList()[0])
+                {
+                    daysLeft = "-";
+                    plannedDate = "-";
+                    dateСompletion = "-";
+                }
+                else
+                {
+                    if(PlannedDatePick.SelectedDate.ToString().Trim() == "")
+                    {
+                        correct = false;
+                    }
+                    else
+                    {
+                        DateTime parsedDate;
+                        if (DateTime.TryParseExact(createDate, "d", null, System.Globalization.DateTimeStyles.None, out parsedDate))
+                        {
+                            daysLeft = ((int)((TimeSpan)(PlannedDatePick.SelectedDate - parsedDate)).TotalDays).ToString();
+                        }
+                        plannedDate = ((DateTime)PlannedDatePick.SelectedDate).ToString("d");
+                    }
+                    dateСompletion = (bool)СompletionCheck.IsChecked ? DateTime.Now.ToString("d") : "";
+                }
+            }
+            if (correct)
+            {
+                currentProblem.CreateDate = createDate;
+                currentProblem.ShortName = shortName;
+                currentProblem.Tags = tags;
+                currentProblem.FullDescription = fullDescription;
+                currentProblem.PlannedDate = plannedDate;
+                currentProblem.DaysLeft = daysLeft;
+                currentProblem.DateСompletion = dateСompletion;
+                currentProblem.Type = typeProblem;
+                DataBaseContext.Instance.SaveChanges();
+                BasicPage basicPage = new();
+                Navigate.Navigate.СurrentFrame.Navigate(basicPage);
+            }
+            else
+            {
+                MessageBox.Show("Тot all fields are filled in", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             TypesCombo.ItemsSource = DataBaseContext.Instance.ProblemTypes.ToList();
+        }
+
+        private void TypesCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(TypesCombo.SelectedItem != null)
+            {
+                if((ProblemType)TypesCombo.SelectedItem == DataBaseContext.Instance.ProblemTypes.ToList()[0])
+                {
+                    PlannedDatePick.IsEnabled = false;
+                    СompletionCheck.IsEnabled = false;
+                    PlannedDatePick.SelectedDate = DateTime.Now;
+                    СompletionCheck.IsChecked = false;
+                } 
+                else
+                {
+                    PlannedDatePick.IsEnabled = true;
+                    СompletionCheck.IsEnabled = true;
+                }
+            }
         }
     }
 }

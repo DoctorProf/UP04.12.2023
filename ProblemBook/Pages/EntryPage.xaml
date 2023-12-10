@@ -21,7 +21,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="1" 
-        Content="Задачи/Заметки"
+        Content="Tasks/Notes"
         HorizontalAlignment="Center"
         VerticalAlignment="Center" 
         Margin="20"
