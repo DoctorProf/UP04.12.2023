@@ -10,6 +10,9 @@
     <Compile Update="Pages\BasicPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\Description.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\EditPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,6 +22,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\BasicPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Description.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\EditPage.xaml">

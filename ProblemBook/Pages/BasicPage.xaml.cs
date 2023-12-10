@@ -16,13 +16,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ProblemBook.Converter;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProblemBook.Pages
 {
     /// <summary>
     /// Логика взаимодействия для BasicPage.xaml
     /// </summary>
-public partial class BasicPage : Page
+    public partial class BasicPage : Page
     {
         public static DataGridTextColumn CreateColumn(string header, string binding)
         {
@@ -31,7 +32,7 @@ public partial class BasicPage : Page
                 Header = header,
                 IsReadOnly = true,
             };
-            Binding textBinding = new (binding)
+            Binding textBinding = new(binding)
             {
                 Converter = new TruncateStringConverter()
             };
@@ -41,7 +42,7 @@ public partial class BasicPage : Page
         public static void UpdateTable(DataGrid ProblemTable)
         {
             ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.ToList();
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").ToList();
         }
         public BasicPage()
         {
@@ -63,11 +64,17 @@ public partial class BasicPage : Page
         }
         private void TableDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(ProblemTable.SelectedItem != null) 
+            if (ProblemTable.SelectedItem != null)
             {
                 Problem problem = (Problem)ProblemTable.SelectedItem;
                 EditPage editPage = new(problem);
+                Navigate.Navigate.СurrentFrame.Navigate(editPage);
             }
+        }
+        private void ClickOnBack(object sender, RoutedEventArgs e)
+        {
+            EntryPage entryPage = new();
+            Navigate.Navigate.СurrentFrame.Navigate(entryPage);
         }
         private void ClickOnAdd(object sender, RoutedEventArgs e)
         {
@@ -78,13 +85,119 @@ public partial class BasicPage : Page
         }
         private void ClickOnRemove(object sender, RoutedEventArgs e)
         {
-            if(ProblemTable.SelectedItem != null)
+            if (ProblemTable.SelectedItem != null)
             {
                 Problem problem = (Problem)ProblemTable.SelectedItem;
                 DataBaseContext.Instance.Problems.Remove(problem);
                 DataBaseContext.Instance.SaveChanges();
                 UpdateTable(ProblemTable);
             }
+
+        }
+        private void ClickOnOpenDescription(object sender, RoutedEventArgs e)
+        {
+            if (ProblemTable.SelectedItem != null)
+            {
+                Description discriptionPage = new((Problem)ProblemTable.SelectedItem);
+                Navigate.Navigate.СurrentFrame.Navigate(discriptionPage);
+            }
+        }
+        private void ClickOnOResetFilters(object sender, RoutedEventArgs e)
+        {
+            RadioToday.IsChecked = false;
+            RadioYasterday.IsChecked = false;
+            RadioTask.IsChecked = false;
+            RadioNote.IsChecked = false;
+            RadioCompletion.IsChecked = false;
+            RadioNoCompletion.IsChecked = false;
+            FilterDate.SelectedDate = null;
+            UpdateTable(ProblemTable);
+        }
+        private void RadioButtonToday(object sender, RoutedEventArgs e)
+        {
+            RadioTask.IsChecked = false;
+            RadioNote.IsChecked = false;
+            RadioCompletion.IsChecked = false;
+            RadioNoCompletion.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            string date = DateTime.Now.ToString("d");
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.CreateDate == date).ToList();
+            FilterDate.SelectedDate = null;
+        }
+
+        private void RadioButtonYasterday(object sender, RoutedEventArgs e)
+        {
+            RadioTask.IsChecked = false;
+            RadioNote.IsChecked = false;
+            RadioCompletion.IsChecked = false;
+            RadioNoCompletion.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            string yeasterdayDateStr = DateTime.Now.AddDays(-1).Date.ToString("d");
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.CreateDate == yeasterdayDateStr).ToList();
+            FilterDate.SelectedDate = null;
+        }
+
+        private void FilterDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RadioToday.IsChecked = false;
+            RadioYasterday.IsChecked = false;
+            RadioCompletion.IsChecked = false;
+            RadioNoCompletion.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            if (FilterDate.SelectedDate == null) return;
+            string date = ((DateTime)FilterDate.SelectedDate).ToString("d");
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.CreateDate == date || p.PlannedDate == date).ToList();
+        }
+        private void RadioButtonTask(object sender, RoutedEventArgs e)
+        {
+            RadioToday.IsChecked = false;
+            RadioYasterday.IsChecked = false;
+            RadioCompletion.IsChecked = false;
+            RadioNoCompletion.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
+            DataBaseContext.Instance.ProblemTypes.ToList()[1]).ToList();
+        }
+        private void RadioButtonNote(object sender, RoutedEventArgs e)
+        {
+            RadioToday.IsChecked = false;
+            RadioYasterday.IsChecked = false;
+            RadioCompletion.IsChecked = false;
+            RadioNoCompletion.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
+                        DataBaseContext.Instance.ProblemTypes.ToList()[0]).ToList();
+        }
+        private void RadioButtonCompletion(object sender, RoutedEventArgs e)
+        {
+            RadioToday.IsChecked = false;
+            RadioYasterday.IsChecked = false;
+            RadioNote.IsChecked = false;
+            RadioTask.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
+            DataBaseContext.Instance.ProblemTypes.ToList()[1] && p.DateСompletion != "").ToList();
+        }
+        private void RadioButtonNoCompletion(object sender, RoutedEventArgs e)
+        {
+            RadioToday.IsChecked = false;
+            RadioYasterday.IsChecked = false;
+            RadioNote.IsChecked = false;
+            RadioTask.IsChecked = false;
+            ProblemTable.ItemsSource = null;
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
+                        DataBaseContext.Instance.ProblemTypes.ToList()[1] && p.DateСompletion == "").ToList();
+        }
+        private void FilterShortName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ProblemTable.ItemsSource = null;
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Where(p => p.ShortName.Contains(FilterShortName.Text)).ToList();
+        }
+
+        private void FilterTags_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ProblemTable.ItemsSource = null;
+            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Where(p => p.Tags.Contains(FilterTags.Text)).ToList();
         }
     }
 }

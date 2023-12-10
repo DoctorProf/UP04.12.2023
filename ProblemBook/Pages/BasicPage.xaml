@@ -17,43 +17,99 @@
       >
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.9*"/>
             <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.9*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
+        <GroupBox Header="FiltersDate" Margin="0,0,758,0" Height="145" VerticalAlignment="Top" Grid.Row="0" Grid.ColumnSpan="2">
+            <StackPanel Height="105" Width="161" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <RadioButton x:Name ="RadioToday" Content="Сегодня" Click="RadioButtonToday"/>
+                <RadioButton  x:Name ="RadioYasterday" Content="Вчера" Click="RadioButtonYasterday"/>
+                <DatePicker x:Name="FilterDate" Width="120" Margin="0 20 0 0" SelectedDateChanged="FilterDateChanged"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="FiltersType" Margin="0,145,758,0" Height="105" VerticalAlignment="Top" Grid.Row="0" Grid.ColumnSpan="2">
+            <StackPanel Height="52" Width="161" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,1">
+                <RadioButton x:Name ="RadioTask" Content="Задачи" Click="RadioButtonTask"/>
+                <RadioButton x:Name ="RadioNote" Content="Заметки" Click="RadioButtonNote"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="FiltersCompetion" Margin="0,0,758,0" Height="104" VerticalAlignment="Center" Grid.ColumnSpan="2">
+            <StackPanel Height="52" Width="161" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,1">
+                <RadioButton x:Name ="RadioCompletion" Content="Выполнено" Click="RadioButtonCompletion"/>
+                <RadioButton x:Name ="RadioNoCompletion" Content="Не выполнено" Click="RadioButtonNoCompletion"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="FilterShortName" Margin="0,352,757,0" Height="104" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <StackPanel Height="52" Width="161" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,1">
+                <TextBox x:Name="FilterShortName"  Width="120" Margin="0 20 0 0" TextChanged="FilterShortName_TextChanged"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="FilterTags" Margin="0,461,757,0" Height="104" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <StackPanel Height="52" Width="161" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,1">
+                <TextBox x:Name="FilterTags"  Width="120" Margin="0 20 0 0" TextChanged ="FilterTags_TextChanged"/>
+            </StackPanel>
+        </GroupBox>
         <DataGrid x:Name="ProblemTable"
-                  Grid.Row="1"
-                  Margin="10"
+                  Grid.Column="1"
+                  Margin="0 0 0 0"
                   MouseDoubleClick="TableDoubleClick"
                   AutoGenerateColumns="False"
                   CanUserDeleteRows="False"
                   CanUserAddRows="False"
                   >
         </DataGrid>
-        <Button Grid.Column="1" 
-                Grid.Row="1"
-            Content="Add Problem"
+        <Button Grid.Column="2" 
+            Content="Back"
+            HorizontalAlignment="Center" 
+            Margin="0,10,0,480"
+            Click="ClickOnBack"
+            Width="120"
+            Height="50" 
+            BorderBrush="Black"
+            Background="#8B00FF"
+            Foreground="White"/>
+        <Button Grid.Column="2" 
+            Content="Add problem"
             HorizontalAlignment="Center" 
             Margin="0,60,0,370"
             Click="ClickOnAdd"
-            Width="150"
+            Width="120"
             Height="50" 
             BorderBrush="Black"
-            Background="BlanchedAlmond"
-            Foreground="Black"/>
-        <Button Grid.Column="1" 
-        Grid.Row="1"
-        Content="Delete Problem"
+            Background="#8B00FF"
+            Foreground="White"/>
+        <Button Grid.Column="2" 
+        Content="Delete problem"
         HorizontalAlignment="Center" 
         Margin="0,140,0,290"
         Click="ClickOnRemove"
-        Width="150"
+        Width="120"
         Height="50" 
         BorderBrush="Black"
-        Background="BlanchedAlmond"
-        Foreground="Black"/>
+        Background="#8B00FF"
+        Foreground="WHite"/>
+        <Button Grid.Column="2" 
+            Content="Open description"
+            HorizontalAlignment="Center" 
+            Margin="0,220,0,210"
+            Click="ClickOnOpenDescription"
+            Width="120"
+            Height="50" 
+            BorderBrush="Black"
+            Background="#8B00FF"
+            Foreground="White"/>
+        <Button Grid.Column="2" 
+            Content="Reset Filters"
+            HorizontalAlignment="Center" 
+            Margin="0,320,0,160"
+            Click="ClickOnOResetFilters"
+            Width="120"
+            Height="50" 
+            BorderBrush="Black"
+            Background="#8B00FF"
+            Foreground="White"/>
     </Grid>
 </Page>

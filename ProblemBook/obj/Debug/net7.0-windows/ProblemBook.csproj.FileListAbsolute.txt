@@ -107,3 +107,5 @@ C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\UP\UP04.12.2023\Proble
 C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\UP\UP04.12.2023\ProblemBook\obj\Debug\net7.0-windows\ProblemBook.pdb
 C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\UP\UP04.12.2023\ProblemBook\obj\Debug\net7.0-windows\ProblemBook.genruntimeconfig.cache
 C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\UP\UP04.12.2023\ProblemBook\obj\Debug\net7.0-windows\ref\ProblemBook.dll
+C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\UP\UP04.12.2023\ProblemBook\obj\Debug\net7.0-windows\Pages\Description.g.cs
+C:\Users\USER\OneDrive\Рабочий стол\DoctorProf\UP\UP04.12.2023\ProblemBook\obj\Debug\net7.0-windows\Pages\Description.baml

@@ -36,50 +36,38 @@ namespace ProblemBook.Pages
         private void ClickOnButtonSave(object sender, RoutedEventArgs e)
         {
             bool correct = true;
-            string createDate = "";
-            string shortName = ShortNameBox.Text;
-            string tags = TagsBox.Text;
-            string fullDescription = FullDescriptionBox.Text;
+            string createDate = currentProblem.CreateDate;
+            string shortName = "";
+            string tags = "";
+            string fullDescription = "";
             string plannedDate = "";
             string daysLeft = "";
             string dateСompletion = "";
             ProblemType typeProblem = (ProblemType)TypesCombo.SelectedItem;
-            if(createDate.Trim() == "")
+            if (createDate.Trim() == "")
             {
                 createDate = DateTime.Now.ToString("d");
             }
-            if(shortName.Trim() == "")
+            if (ShortNameBox.Text.Trim() == "" ||
+               TagsBox.Text.Trim() == "" ||
+               FullDescriptionBox.Text.Trim() == "")
             {
                 correct = false;
             } 
             else
             {
-                currentProblem.ShortName = shortName;
+                shortName = ShortNameBox.Text;
+                tags = TagsBox.Text;
+                fullDescription = FullDescriptionBox.Text;
             }
-            if(tags.Trim() == "")
-            {
-                correct = false;
-            }
-            else
-            {
-                currentProblem.Tags = tags;
-            }
-            if(fullDescription.Trim() == "")
-            {
-                correct = false;
-            }
-            else
-            {
-                currentProblem.FullDescription = fullDescription;
-            }
-            if(typeProblem == null) 
+            if (typeProblem == null) 
             {
                 correct = false;
             }  
             else
             {
                 ProblemType currentType = (ProblemType)TypesCombo.SelectedItem;
-                if ( currentType == DataBaseContext.Instance.ProblemTypes.ToList()[0])
+                if (currentType == DataBaseContext.Instance.ProblemTypes.ToList()[0])
                 {
                     daysLeft = "-";
                     plannedDate = "-";
@@ -96,7 +84,15 @@ namespace ProblemBook.Pages
                         DateTime parsedDate;
                         if (DateTime.TryParseExact(createDate, "d", null, System.Globalization.DateTimeStyles.None, out parsedDate))
                         {
-                            daysLeft = ((int)((TimeSpan)(PlannedDatePick.SelectedDate - parsedDate)).TotalDays).ToString();
+                            if(PlannedDatePick.SelectedDate < parsedDate)
+                            {
+                                MessageBox.Show("Планируемая дата меньше даты создания", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                return;
+                            } 
+                            else
+                            {
+                                daysLeft = ((int)((TimeSpan)(PlannedDatePick.SelectedDate - parsedDate)).TotalDays).ToString();
+                            }
                         }
                         plannedDate = ((DateTime)PlannedDatePick.SelectedDate).ToString("d");
                     }
@@ -119,14 +115,19 @@ namespace ProblemBook.Pages
             }
             else
             {
-                MessageBox.Show("Тot all fields are filled in", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Не все поля заполнены", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             TypesCombo.ItemsSource = DataBaseContext.Instance.ProblemTypes.ToList();
+            ShortNameBox.Text = currentProblem.ShortName;
+            TagsBox.Text = currentProblem.Tags;
+            FullDescriptionBox.Text = currentProblem.FullDescription;
+            PlannedDatePick.Text = currentProblem.PlannedDate;
+            TypesCombo.SelectedItem = currentProblem.Type;
+            СompletionCheck.IsChecked = currentProblem.DateСompletion == "" ? false : true;
         }
 
         private void TypesCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)

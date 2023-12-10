@@ -36,8 +36,8 @@
                Width="200"
                Height="50" 
                BorderBrush="Black"
-               Background="BlanchedAlmond"
-               Foreground="Black"/>
+               Background="#8B00FF"
+               Foreground="White"/>
         <Button Grid.Column="1"
                 Grid.Row="0"
                Content="Back"
@@ -47,8 +47,8 @@
                Width="200"
                Height="50" 
                BorderBrush="Black"
-               Background="BlanchedAlmond"
-               Foreground="Black"/>
+               Background="#8B00FF"
+               Foreground="White"/>
         <Label Content="ShortName:"
                Grid.Column="0"
                Grid.Row="1"
@@ -121,7 +121,7 @@
                  HorizontalAlignment="Right"
                  Margin="0 0 60 0"
                  Width="300"
-                 MaxLength ="30"/>
+                 MaxLength ="10"/>
         <TextBox x:Name="TagsBox"
                 Grid.Column="0"
                 Grid.Row="2"
@@ -129,7 +129,7 @@
                 HorizontalAlignment="Right"
                 Margin="0 0 60 0"
                 Width="300"
-                MaxLength ="30"/>
+                MaxLength ="50"/>
         <TextBox x:Name="FullDescriptionBox"
                 Grid.Column="0"
                 Grid.Row="3"
@@ -137,7 +137,7 @@
                 HorizontalAlignment="Right"
                 Margin="0 0 60 0"
                 Width="300"
-                MaxLength ="400"
+                MaxLength ="200"
                 TextWrapping="Wrap"/>
     </Grid>
 </Page>

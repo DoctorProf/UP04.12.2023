@@ -10,18 +10,18 @@ namespace ProblemBook.DataBase.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public string CreateDate { get; set; }
+        public string CreateDate { get; set; } = "";
 
-        public string ShortName { get; set; }
+        public string ShortName { get; set; } = "";
 
-        public string Tags { get; set; }
+        public string Tags { get; set; } = "";
 
         public string FullDescription { get; set; }
 
-        public string PlannedDate { get; set; }
+        public string PlannedDate { get; set; } = "";
 
-        public string DaysLeft { get; set; }
-        public string DateСompletion { get; set; }
+        public string DaysLeft { get; set; } = "";
+        public string DateСompletion { get; set; } = "";
 
         public ProblemType Type { get; set; }
 

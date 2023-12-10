@@ -29,8 +29,8 @@
         Width="200"
         Height="50" 
         BorderBrush="Black"
-        Background="BlanchedAlmond"
-        Foreground="Black"
+        Background="#8B00FF"
+        Foreground="White"
         />
     </Grid>
 </Page>
