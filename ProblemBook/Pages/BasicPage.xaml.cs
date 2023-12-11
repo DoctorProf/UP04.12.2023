@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ProblemBook.Converter;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProblemBook.Pages
 {
@@ -25,6 +26,12 @@ namespace ProblemBook.Pages
     /// </summary>
     public partial class BasicPage : Page
     {
+        public static int FilterDateCheck {  get; set; }
+        public static int FilterTypeCheck { get; set; }
+        public static int FilterCompletionCheck { get; set; }
+        public static int FilterFieldsCheck { get; set; }
+
+
         public static DataGridTextColumn CreateColumn(string header, string binding)
         {
             DataGridTextColumn column = new()
@@ -39,23 +46,69 @@ namespace ProblemBook.Pages
             column.Binding = textBinding;
             return column;
         }
-        public static void UpdateTable(DataGrid ProblemTable)
-        {
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").ToList();
-        }
+        
         public BasicPage()
         {
             InitializeComponent();
         }
+        public void UpdateTable(DataGrid ProblemTable)
+        {
+            ProblemTable.ItemsSource = null;
+            List<Problem> problems = DataBaseContext.Instance.Problems.Include("Type").ToList();
+            if (FilterDateCheck == 1)
+            {
+                string date = DateTime.Now.ToString("d");
+                problems = problems.Where(p => p.CreateDate == date).ToList();
+            }
+            if (FilterDateCheck == 2)
+            {
+                string yeasterdayDateStr = DateTime.Now.AddDays(-1).Date.ToString("d");
+                problems = problems.Where(p => p.CreateDate == yeasterdayDateStr).ToList();
+            }
+            if (FilterDateCheck == 3)
+            {
+                if (FilterDatePick.SelectedDate != null)
+                {
+                    string date = ((DateTime)FilterDatePick.SelectedDate).ToString("d");
+                    problems = problems.Where(p => p.CreateDate == date || p.PlannedDate == date).ToList();
+                }
+            }
+            if (FilterTypeCheck == 1)
+            {
 
+                problems = problems.Where(p => p.Type == DataBaseContext.Instance.ProblemTypes.ToList()[1]).ToList();
+
+            }
+            if (FilterTypeCheck == 2)
+            {
+                 problems = problems.Where(p => p.Type == DataBaseContext.Instance.ProblemTypes.ToList()[0]).ToList();
+            }
+            if (FilterCompletionCheck == 1)
+            {
+                problems = problems.Where(p => p.Type ==
+                           DataBaseContext.Instance.ProblemTypes.ToList()[1] && p.DateСompletion != "").ToList();
+            }
+            if (FilterCompletionCheck == 2)
+            {
+                problems = problems.Where(p => p.Type ==
+                           DataBaseContext.Instance.ProblemTypes.ToList()[1] && p.DateСompletion == "").ToList();
+            }
+            if (FilterFieldsCheck == 1)
+            {
+                problems = problems.Where(p => p.ShortName.ToLower().Contains(FilterShortName.Text.ToLower())).ToList();
+            }
+            if (FilterFieldsCheck == 2)
+            {
+                problems = problems.Where(p => p.Tags.ToLower().Contains(FilterTags.Text.ToLower())).ToList();
+            }
+            ProblemTable.ItemsSource = problems;
+        }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             ProblemTable.Columns.Clear();
             ProblemTable.Columns.Add(CreateColumn("Created", "CreateDate"));
             ProblemTable.Columns.Add(CreateColumn("ShortName", "ShortName"));
             ProblemTable.Columns.Add(CreateColumn("Tags", "Tags"));
-            ProblemTable.Columns.Add(CreateColumn("Description", "FullDescription"));
             ProblemTable.Columns.Add(CreateColumn("PlannedDate", "PlannedDate"));
             ProblemTable.Columns.Add(CreateColumn("DaysLeft", "DaysLeft"));
             ProblemTable.Columns.Add(CreateColumn("Completion", "DateСompletion"));
@@ -87,10 +140,18 @@ namespace ProblemBook.Pages
         {
             if (ProblemTable.SelectedItem != null)
             {
-                Problem problem = (Problem)ProblemTable.SelectedItem;
-                DataBaseContext.Instance.Problems.Remove(problem);
-                DataBaseContext.Instance.SaveChanges();
-                UpdateTable(ProblemTable);
+                MessageBoxResult result = MessageBox.Show("Хотите удалить запись?", "Удаление", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if(result == MessageBoxResult.Yes) 
+                {
+                    Problem problem = (Problem)ProblemTable.SelectedItem;
+                    DataBaseContext.Instance.Problems.Remove(problem);
+                    DataBaseContext.Instance.SaveChanges();
+                    UpdateTable(ProblemTable);
+                }
+                else
+                {
+                    return;
+                }
             }
 
         }
@@ -110,94 +171,62 @@ namespace ProblemBook.Pages
             RadioNote.IsChecked = false;
             RadioCompletion.IsChecked = false;
             RadioNoCompletion.IsChecked = false;
-            FilterDate.SelectedDate = null;
+            FilterDatePick.SelectedDate = null;
+            FilterTags.Text = null;
+            FilterShortName.Text = null;
+            FilterDateCheck = 0;
+            FilterFieldsCheck = 0;
+            FilterTypeCheck = 0;
+            FilterCompletionCheck = 0;
             UpdateTable(ProblemTable);
         }
         private void RadioButtonToday(object sender, RoutedEventArgs e)
         {
-            RadioTask.IsChecked = false;
-            RadioNote.IsChecked = false;
-            RadioCompletion.IsChecked = false;
-            RadioNoCompletion.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            string date = DateTime.Now.ToString("d");
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.CreateDate == date).ToList();
-            FilterDate.SelectedDate = null;
+            FilterDateCheck = 1;
+            UpdateTable(ProblemTable);
         }
 
         private void RadioButtonYasterday(object sender, RoutedEventArgs e)
         {
-            RadioTask.IsChecked = false;
-            RadioNote.IsChecked = false;
-            RadioCompletion.IsChecked = false;
-            RadioNoCompletion.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            string yeasterdayDateStr = DateTime.Now.AddDays(-1).Date.ToString("d");
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.CreateDate == yeasterdayDateStr).ToList();
-            FilterDate.SelectedDate = null;
+            FilterDateCheck = 2;
+            UpdateTable(ProblemTable);
         }
 
         private void FilterDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            RadioToday.IsChecked = false;
-            RadioYasterday.IsChecked = false;
-            RadioCompletion.IsChecked = false;
-            RadioNoCompletion.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            if (FilterDate.SelectedDate == null) return;
-            string date = ((DateTime)FilterDate.SelectedDate).ToString("d");
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.CreateDate == date || p.PlannedDate == date).ToList();
+            FilterDateCheck = 3;
+            UpdateTable(ProblemTable);
         }
         private void RadioButtonTask(object sender, RoutedEventArgs e)
         {
-            RadioToday.IsChecked = false;
-            RadioYasterday.IsChecked = false;
-            RadioCompletion.IsChecked = false;
-            RadioNoCompletion.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
-            DataBaseContext.Instance.ProblemTypes.ToList()[1]).ToList();
+            FilterTypeCheck = 1;
+            UpdateTable(ProblemTable);
         }
         private void RadioButtonNote(object sender, RoutedEventArgs e)
         {
-            RadioToday.IsChecked = false;
-            RadioYasterday.IsChecked = false;
-            RadioCompletion.IsChecked = false;
-            RadioNoCompletion.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
-                        DataBaseContext.Instance.ProblemTypes.ToList()[0]).ToList();
+            FilterTypeCheck = 2;
+            UpdateTable(ProblemTable);
         }
         private void RadioButtonCompletion(object sender, RoutedEventArgs e)
         {
-            RadioToday.IsChecked = false;
-            RadioYasterday.IsChecked = false;
-            RadioNote.IsChecked = false;
-            RadioTask.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
-            DataBaseContext.Instance.ProblemTypes.ToList()[1] && p.DateСompletion != "").ToList();
+            FilterCompletionCheck = 1;
+            UpdateTable(ProblemTable);
         }
         private void RadioButtonNoCompletion(object sender, RoutedEventArgs e)
         {
-            RadioToday.IsChecked = false;
-            RadioYasterday.IsChecked = false;
-            RadioNote.IsChecked = false;
-            RadioTask.IsChecked = false;
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Include("Type").Where(p => p.Type ==
-                        DataBaseContext.Instance.ProblemTypes.ToList()[1] && p.DateСompletion == "").ToList();
+            FilterCompletionCheck = 2;
+            UpdateTable(ProblemTable);
         }
         private void FilterShortName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Where(p => p.ShortName.Contains(FilterShortName.Text)).ToList();
+            FilterFieldsCheck = 1;
+            UpdateTable(ProblemTable);
         }
 
         private void FilterTags_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ProblemTable.ItemsSource = null;
-            ProblemTable.ItemsSource = DataBaseContext.Instance.Problems.Where(p => p.Tags.Contains(FilterTags.Text)).ToList();
+            FilterFieldsCheck = 2;
+            UpdateTable(ProblemTable);
         }
     }
 }

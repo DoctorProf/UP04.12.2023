@@ -27,7 +27,7 @@
             <StackPanel Height="105" Width="161" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
                 <RadioButton x:Name ="RadioToday" Content="Сегодня" Click="RadioButtonToday"/>
                 <RadioButton  x:Name ="RadioYasterday" Content="Вчера" Click="RadioButtonYasterday"/>
-                <DatePicker x:Name="FilterDate" Width="120" Margin="0 20 0 0" SelectedDateChanged="FilterDateChanged"/>
+                <DatePicker x:Name="FilterDatePick" Width="120" Margin="0 20 0 0" SelectedDateChanged="FilterDateChanged"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="FiltersType" Margin="0,145,758,0" Height="105" VerticalAlignment="Top" Grid.Row="0" Grid.ColumnSpan="2">
@@ -72,7 +72,7 @@
             Background="#8B00FF"
             Foreground="White"/>
         <Button Grid.Column="2" 
-            Content="Add problem"
+            Content="+ problem"
             HorizontalAlignment="Center" 
             Margin="0,60,0,370"
             Click="ClickOnAdd"
@@ -82,7 +82,7 @@
             Background="#8B00FF"
             Foreground="White"/>
         <Button Grid.Column="2" 
-        Content="Delete problem"
+        Content="- problem"
         HorizontalAlignment="Center" 
         Margin="0,140,0,290"
         Click="ClickOnRemove"
@@ -92,7 +92,7 @@
         Background="#8B00FF"
         Foreground="WHite"/>
         <Button Grid.Column="2" 
-            Content="Open description"
+            Content="Description"
             HorizontalAlignment="Center" 
             Margin="0,220,0,210"
             Click="ClickOnOpenDescription"

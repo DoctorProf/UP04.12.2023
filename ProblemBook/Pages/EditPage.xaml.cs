@@ -81,20 +81,12 @@ namespace ProblemBook.Pages
                     }
                     else
                     {
-                        DateTime parsedDate;
-                        if (DateTime.TryParseExact(createDate, "d", null, System.Globalization.DateTimeStyles.None, out parsedDate))
+                        if(PlannedDatePick.SelectedDate < DateTime.Now.Date)
                         {
-                            if(PlannedDatePick.SelectedDate < parsedDate)
-                            {
-                                MessageBox.Show("Планируемая дата меньше даты создания", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                return;
-                            } 
-                            else
-                            {
-                                daysLeft = ((int)((TimeSpan)(PlannedDatePick.SelectedDate - parsedDate)).TotalDays).ToString();
-                            }
-                        }
-                        plannedDate = ((DateTime)PlannedDatePick.SelectedDate).ToString("d");
+                            MessageBox.Show("Планируемая дата меньше текущей даты", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        } 
+                    plannedDate = ((DateTime)PlannedDatePick.SelectedDate).ToString("d");
                     }
                     dateСompletion = (bool)СompletionCheck.IsChecked ? DateTime.Now.ToString("d") : "";
                 }
@@ -106,7 +98,7 @@ namespace ProblemBook.Pages
                 currentProblem.Tags = tags;
                 currentProblem.FullDescription = fullDescription;
                 currentProblem.PlannedDate = plannedDate;
-                currentProblem.DaysLeft = daysLeft;
+                currentProblem.DaysLeft = currentProblem.DaysLeft;
                 currentProblem.DateСompletion = dateСompletion;
                 currentProblem.Type = typeProblem;
                 DataBaseContext.Instance.SaveChanges();

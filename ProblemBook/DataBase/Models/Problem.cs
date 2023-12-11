@@ -20,7 +20,23 @@ namespace ProblemBook.DataBase.Models
 
         public string PlannedDate { get; set; } = "";
 
-        public string DaysLeft { get; set; } = "";
+        public string DaysLeft
+        {
+            get
+            {
+                if (DateTime.TryParse(PlannedDate, out DateTime plannedDate))
+                {
+                    TimeSpan timeSpan = plannedDate - DateTime.Now;
+                    int daysLeft = int.Max(timeSpan.Days, 0);
+                    return daysLeft.ToString();
+                }
+                return "-";
+            }
+            set 
+            {
+
+            }
+        }
         public string DateСompletion { get; set; } = "";
 
         public ProblemType Type { get; set; }

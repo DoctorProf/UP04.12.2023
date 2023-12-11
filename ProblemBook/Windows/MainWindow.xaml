@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProblemBook"
         mc:Ignorable="d"
+        Title="ProblemBook"
         Height="600"
         MaxHeight="600"
         MinHeight="600"
